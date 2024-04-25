@@ -25,18 +25,20 @@
             alert("비밀번호를 입력하세요!");
         }else{
             //로그인체크
-            $.ajax({
+            $.ajax({  
                 type:"post",
-                url:"/login",
+                url:"/users/login",
                 data:{uid:uid, upass:upass},
-                success:function(data){
+                success:function(data){//users.js result값
                     console.log(data);
                     if(data.result==0) {
                         alert("아이디가 존재하지 않습니다!");
                     }else if(data.result==2) {
                         alert("비밀번호 일치하지 않습니다!");
                     }else{
-                        alert("성공");
+                        //alert("성공");
+                        sessionStorage.setItem('uid', uid);
+                        location.href="/";
                     }
                 }
             })
