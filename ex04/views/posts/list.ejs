@@ -1,22 +1,31 @@
 <h1><%=title%></h1>
+<div class="text-end mb-3" id="div-write" style="display:none;">
+    <a href="/posts/insert"><button class="btn btn-primary">글쓰기</button></a>
+</div>
 <div id="div_posts"></div>
 <script id="temp_posts" type="x-handlebars-template">
-    <table class="table table-secondary table-striped table-hover">
-        <tr>
+    <table class="table table-striped-columns table-hover table-light">
+        <tr class="table-primary">
             <td>ID</td><td>Title</td><td>Writer</td><td>Date</td>
         </tr>    
         {{#each .}}
             <tr>
                 <td>{{pid}}</td>
-                <td>{{title}}</td>
+                <td><a href="/posts/read?pid={{pid}}">{{title}}</a></td>
                 <td>{{writer}}</td>
-                <td>{{pdate}}</td>
+                <td>{{fdate}}</td>
             </tr>    
         {{/each}}
     </table>    
 </script>
 <script>
     getData();
+    if(uid){
+        $("#div-write").show();
+    }else{
+        $("#div-write").hide();
+    }
+
     function getData(){
         $.ajax({
             type:"get",

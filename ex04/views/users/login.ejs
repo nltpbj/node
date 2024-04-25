@@ -4,7 +4,7 @@
             <div class="card-header text-center">
                 <h3 class="py-2">로그인</h3>
             </div>
-            <div class="card-body"> 
+            <div class="card-body">
                 <form name="frm">
                     <input name="uid" placeholder="아이디" class="form-control mb-3">
                     <input name="upass" type="password" placeholder="비밀번호" class="form-control mb-3">
@@ -15,7 +15,7 @@
     </div>
 </div>
 <script>
-    $(frm).on("submit", function(e){ //깜빡이는거 방지
+    $(frm).on("submit", function(e){
         e.preventDefault();
         const uid=$(frm.uid).val();
         const upass=$(frm.upass).val();
@@ -25,11 +25,11 @@
             alert("비밀번호를 입력하세요!");
         }else{
             //로그인체크
-            $.ajax({  
+            $.ajax({
                 type:"post",
                 url:"/users/login",
                 data:{uid:uid, upass:upass},
-                success:function(data){//users.js result값
+                success:function(data){
                     console.log(data);
                     if(data.result==0) {
                         alert("아이디가 존재하지 않습니다!");

@@ -45,4 +45,5 @@ app.use(function(err, req, res, next) {
 
 var db=require('./db');
 db.connect();
+
 module.exports = app;
