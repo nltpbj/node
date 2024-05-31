@@ -93,12 +93,22 @@ router.post('/delete', function(req, res){
   });
 });
 
-//도서정보 Read
+//도서정보 Read 테스트:/books/read/20?uid=red
 router.get('/read/:bid', function(req, res){
   const bid=req.params.bid;
-  const sql="select *,date_format(updatedate,'%Y-%m-%d %T') fmtdate from books where bid=?";
-  db.get().query(sql, [bid], function(err, rows){
-    res.send(rows[0]);
+  const uid=req.query.uid;
+  //console.log('uid의 행방: ', bid, uid);
+  let sql="select *,date_format(regDate,'%Y-%m-%d') fmtdate,format(price,0) fmtprice,";
+      sql+="(select count(*) from likes where books.bid=likes.bid) lcnt,"
+      sql+="(select count(*) from likes where books.bid=likes.bid and uid=?) ucnt";
+      sql+=" from books where bid=?";
+  //const sql="select * from books where"
+  db.get().query(sql, [uid, bid], function(err, rows){
+    if(err){
+      console.log('에러: '+err);
+    }else{
+     res.send(rows[0]);
+    }
   });
 });
 
@@ -126,12 +136,26 @@ router.post('/likes/insert', function(req, res){
     const sql="insert into likes(uid,bid) values(?,?)"
     db.get().query(sql, [uid, bid], function(err, rows){
         if(err){
-            console.log('err......', err);
+           // console.log('err......', err);
             res.send({result:0});
         }else{
             res.send({result:1});
         }
     });
+});
+//좋아요 취소
+router.post('/likes/delete', function(req, res){
+  const uid=req.body.uid;
+  const bid=req.body.bid;
+  const sql ="delete from likes where uid=? and bid=?";
+  db.get().query(sql, [uid, bid], function(err, rows){
+    if(err){
+      console.log('err......', err);
+      res.send({result:0});
+    }else{
+      res.send({result:1});
+    }
+  });
 });
 
 module.exports = router;
